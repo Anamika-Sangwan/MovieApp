@@ -21,19 +21,14 @@ const App = () => {
   const [movieList, setMovieList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-
-  // Debounce the search term
   useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm]);
-
   const fetchMovies = async (query = '') => {
     setIsLoading(true);
     setErrorMessage('');
     try {
-      // Use search endpoint if there's a query, otherwise use discover
       const endpoint = query
         ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}&sort_by=popularity.desc`
         : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
-
       const response = await fetch(endpoint, API_OPTIONS);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -59,7 +54,6 @@ const App = () => {
   useEffect(() => {
     fetchMovies(debouncedSearchTerm);
   }, [debouncedSearchTerm]);
-
   return (
     <main>
       <div className='pattern'/>
